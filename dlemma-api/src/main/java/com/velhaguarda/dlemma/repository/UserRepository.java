@@ -1,5 +1,10 @@
 package com.velhaguarda.dlemma.repository;
 
-public class UserRepository {
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.velhaguarda.dlemma.entity.User;
 
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByEmail(String email);
 }
