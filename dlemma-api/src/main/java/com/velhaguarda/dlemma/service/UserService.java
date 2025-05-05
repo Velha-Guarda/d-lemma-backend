@@ -11,6 +11,8 @@ import com.velhaguarda.dlemma.entity.User;
 import com.velhaguarda.dlemma.mapper.UserMapper;
 import com.velhaguarda.dlemma.repository.UserRepository;
 
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +33,6 @@ public class UserService {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email já cadastrado.");
         }
-
         logger.info("Creating user with email: {}", dto.getEmail());
         User user = userMapper.toEntity(dto);
         logger.info("User created: {}", user);

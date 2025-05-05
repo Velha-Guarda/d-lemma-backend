@@ -1,13 +1,19 @@
 package com.velhaguarda.dlemma.mapper;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.velhaguarda.dlemma.dto.UserResponseDTO;
 import com.velhaguarda.dlemma.dto.UserRequestDTO;
 import com.velhaguarda.dlemma.entity.User;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
+    private final PasswordEncoder passwordEncoder;
+
     public UserResponseDTO toResponseDTO(User user) {
         UserResponseDTO responseDTO = new UserResponseDTO();
         responseDTO.setId(user.getId());
@@ -26,7 +32,7 @@ public class UserMapper {
 
         user.setName(requestDTO.getName());
         user.setEmail(requestDTO.getEmail());
-        user.setPassword(requestDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         user.setGraduation(requestDTO.getGraduation());
 
         return user;
