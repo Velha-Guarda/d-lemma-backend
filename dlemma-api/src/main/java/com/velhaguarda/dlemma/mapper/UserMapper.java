@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class UserMapper {
+public class UserMapper { //converte de request para entidade e de entidade para response (JSON)
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO toResponseDTO(User user) {

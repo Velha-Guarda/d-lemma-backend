@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserRequestDTO {
+public class UserRequestDTO { // request feito pelo usuario
     @NotBlank
     @Size(max = 100)
     private String name;

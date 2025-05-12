@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SecurityConfig { // apagar depois (ele libera o acesso a todas as rotas)
+public class SecurityConfig { // apagar depois (as requisicoes tao todas liberadas)
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

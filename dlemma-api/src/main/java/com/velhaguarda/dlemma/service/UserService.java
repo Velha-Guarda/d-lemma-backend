@@ -3,6 +3,7 @@ package com.velhaguarda.dlemma.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.velhaguarda.dlemma.dto.UserRequestDTO;
@@ -17,17 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
     public UserResponseDTO createUser(@Valid UserRequestDTO dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
@@ -48,5 +46,11 @@ public class UserService {
         return users.stream()
                 .map(userMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public User getCurrentUser() { // get the current user who logged in
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

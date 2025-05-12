@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User { //espelho do banco de dados
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
