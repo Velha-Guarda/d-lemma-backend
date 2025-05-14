@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.velhaguarda.dlemma.dto.UserRequestDTO;
 import com.velhaguarda.dlemma.dto.UserResponseDTO;
+import com.velhaguarda.dlemma.service.AuthService;
 import com.velhaguarda.dlemma.service.UserService;
 
 import jakarta.validation.Valid;
@@ -18,11 +19,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController { //tudo de login e registro aqui
-    private final UserService userService;    
+    private final AuthService authService;   
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody @Valid UserRequestDTO requestDTO) {
-        UserResponseDTO responseDTO = userService.createUser(requestDTO);
+        UserResponseDTO responseDTO = authService.createUser(requestDTO);
 
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
