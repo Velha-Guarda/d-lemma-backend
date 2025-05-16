@@ -34,6 +34,7 @@ public class UserMapper { //converte de request para entidade e de entidade para
         user.setEmail(requestDTO.getEmail());
         user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         user.setGraduation(requestDTO.getGraduation());
+        user.setRole(requestDTO.getRole());
 
         return user;
     }

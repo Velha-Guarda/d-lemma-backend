@@ -1,6 +1,9 @@
 package com.velhaguarda.dlemma.dto;
 
+import com.velhaguarda.dlemma.enums.Role;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +20,12 @@ public class UserRequestDTO { // request feito pelo usuario
     private String email;
 
     @NotBlank
-    @Size(min = 6, message = "Password must have at least 6 characters")
     private String password;
 
     @NotBlank
     @Size(max = 100)
     private String graduation;
+
+    @NotNull
+    private Role role; // Enum: STUDENT ou PROFESSOR
 }

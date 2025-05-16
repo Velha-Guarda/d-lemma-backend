@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService { //metodos para controlar usuario
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 

@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -23,6 +24,7 @@ public class UserController { // tudo de usuario aqui
     private final UserService userService;
     private final UserMapper userMapper;
 
+    @PreAuthorize("hasRole('PROFESSOR') or hasRole('DEV')")
     @GetMapping()
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<UserResponseDTO> users = userService.getAllUsers();

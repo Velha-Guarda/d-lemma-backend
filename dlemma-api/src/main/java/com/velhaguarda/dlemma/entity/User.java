@@ -2,8 +2,12 @@ package com.velhaguarda.dlemma.entity;
 
 import java.util.UUID;
 
+import com.velhaguarda.dlemma.enums.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,15 +30,19 @@ public class User { //espelho do banco de dados
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = true, unique = true, length = 150)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = true, length = 100)
     private String graduation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private Role role;
 }
