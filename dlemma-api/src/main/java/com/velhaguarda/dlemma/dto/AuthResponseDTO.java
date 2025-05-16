@@ -1,11 +1,13 @@
 package com.velhaguarda.dlemma.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginResponseDTO {
-    private String message;
+@AllArgsConstructor
+public class AuthResponseDTO {
     private UserResponseDTO user;
+    private String token;
 }
