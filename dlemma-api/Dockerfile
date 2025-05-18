@@ -1,6 +1,6 @@
 FROM maven:3.9-amazoncorretto-21 AS build
 
-COPY src /app/src
+COPY src/main /app/src
 COPY pom.xml /app
 
 WORKDIR /app
