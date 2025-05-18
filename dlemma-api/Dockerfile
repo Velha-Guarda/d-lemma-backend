@@ -18,4 +18,4 @@ EXPOSE $PORT
 
 WORKDIR /app
 
-CMD ["java", "-jar", "app.jar", "--server.port=${PORT}"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=${PORT}"]
