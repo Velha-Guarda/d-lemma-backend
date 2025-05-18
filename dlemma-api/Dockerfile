@@ -23,6 +23,7 @@ COPY --from=build /app/target/dlemma-api-*.jar ./app.jar
 # RUN jar tf app.jar | grep -E "BOOT-INF/classes/com/velhaguarda/dlemma|META-INF/MANIFEST.MF"
 
 # Configuração Render
+ENV SPRING_PROFILES_ACTIVE=dev
 ENV PORT=10000
 EXPOSE $PORT
 
