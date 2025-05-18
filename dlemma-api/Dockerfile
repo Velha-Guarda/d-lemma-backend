@@ -5,17 +5,15 @@ COPY pom.xml /app
 
 WORKDIR /app
 
-RUN mvn clean install
+RUN mvn dependency:go-offline -B
+
+RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21
 
-COPY --from=build /app/target/dlemma-api-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=build /app/target/dlemma-api-*.jar /app/app.jar
 
 ENV PORT=10000
 EXPOSE $PORT
 
-WORKDIR /app
-
-EXPOSE 8080
-
-CMD ["java", "-jar", "app.jar", "--server.port=${PORT}"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=${PORT}"]
