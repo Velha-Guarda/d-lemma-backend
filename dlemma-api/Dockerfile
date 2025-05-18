@@ -9,7 +9,7 @@ RUN mvn dependency:go-offline -B
 
 RUN mvn clean package -DskipTests
 
-FROM amazoncorretto:17
+FROM amazoncorretto:17-alpine-jdk
 
 COPY --from=build /app/target/*.jar /app/app.jar
 
