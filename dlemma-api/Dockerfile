@@ -11,7 +11,7 @@ RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21
 
-COPY --from=build /app/target/dlemma-api-*.jar /app/app.jar
+COPY --from=build /app/target/*.jar /app/app.jar
 
 ENV PORT=10000
 EXPOSE $PORT
