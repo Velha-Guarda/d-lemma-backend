@@ -11,7 +11,7 @@ RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:17-alpine-jdk
 
-COPY --from=build /app/target/*.jar /app/app.jar
+COPY --from=build /app/target/*.jar.original /app/app.jar
 
 ENV PORT=10000
 EXPOSE $PORT
