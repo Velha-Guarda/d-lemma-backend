@@ -16,4 +16,6 @@ COPY --from=build /app/target/dlemma-api-*.jar /app/app.jar
 ENV PORT=10000
 EXPOSE $PORT
 
-ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=${PORT}"]
+WORKDIR /app
+
+CMD ["java", "-jar", "app.jar", "--server.port=${PORT}"]
