@@ -16,7 +16,7 @@ RUN mvn clean package -DskipTests && \
 FROM amazoncorretto:21
 WORKDIR /app
 
-# 3. Copia o JAR repacoteado (NÃO o .original)
+# 3. Copia o JAR repacoteado
 COPY --from=build /app/target/dlemma-api-*.jar ./app.jar
 
 # 4. Verificação opcional (se necessário)
