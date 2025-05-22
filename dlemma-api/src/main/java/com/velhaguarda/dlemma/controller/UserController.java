@@ -3,6 +3,7 @@ package com.velhaguarda.dlemma.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.velhaguarda.dlemma.dto.UserPatchDTO;
 import com.velhaguarda.dlemma.dto.UserResponseDTO;
 import com.velhaguarda.dlemma.entity.User;
 import com.velhaguarda.dlemma.mapper.UserMapper;
@@ -11,11 +12,15 @@ import com.velhaguarda.dlemma.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/users")
@@ -36,5 +41,10 @@ public class UserController { // tudo de usuario aqui
         User user = userService.getCurrentUser();
         return ResponseEntity.ok(userMapper.toResponseDTO(user));
     }
-    
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateTaskStatus(@PathVariable UUID id, @RequestBody UserPatchDTO patchDTO) {
+        UserResponseDTO user = userService.patchTask(id, patchDTO);
+        return ResponseEntity.ok(user);
+    }
 }

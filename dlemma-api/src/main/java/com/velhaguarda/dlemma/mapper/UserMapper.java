@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class UserMapper { //converte de request para entidade e de entidade para response (JSON)
+public class UserMapper { // converte de request para entidade e de entidade para response (JSON)
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO toResponseDTO(User user) {
@@ -23,6 +23,8 @@ public class UserMapper { //converte de request para entidade e de entidade para
                 user.getEmail() != null ? user.getEmail() : "No email provided");
         responseDTO.setGraduation(
                 user.getGraduation() != null ? user.getGraduation() : "No graduation provided");
+        responseDTO.setRole(
+                user.getRole().name() != null ? user.getRole().name() : "No role provided");
 
         return responseDTO;
     }

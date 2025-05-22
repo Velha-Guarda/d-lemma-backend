@@ -7,9 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponseDTO { // resposta em JSON 
+public class UserResponseDTO { // resposta em JSON
     private UUID id;
     private String name;
     private String email;
     private String graduation;
+    private String role;
 }
