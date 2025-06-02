@@ -26,14 +26,14 @@ public class JwtService {
 
     public String generateToken(User user) {
         return Jwts.builder()
-            .setSubject(user.getEmail())
-            .claim("name", user.getName())
-            .claim("graduation", user.getGraduation())
-            .claim("role", user.getRole().name()) // ← ESSENCIAL AQUI
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-            .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-            .compact();
+                .setSubject(user.getEmail())
+                .claim("name", user.getName())
+                .claim("graduation", user.getGraduation())
+                .claim("role", user.getRole().name()) // ← ESSENCIAL AQUI
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public String extractEmail(String token) {
@@ -46,8 +46,8 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-    String email = extractEmail(token);
-    return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        String email = extractEmail(token);
+        return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
@@ -59,4 +59,26 @@ public class JwtService {
                 .getExpiration();
         return expiration.before(new Date());
     }
+
+    public String generateResetPasswordToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("scope", "reset-password")
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 min
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public boolean isResetPasswordTokenValid(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return "reset-password".equals(claims.get("scope"))
+                && !isTokenExpired(token);
+    }
+
 }

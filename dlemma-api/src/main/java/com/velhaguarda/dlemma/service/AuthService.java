@@ -6,8 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.velhaguarda.dlemma.dto.*;
-import com.velhaguarda.dlemma.dto.AuthResponseDTO;
-import com.velhaguarda.dlemma.dto.UserRequestDTO;
 import com.velhaguarda.dlemma.entity.User;
 import com.velhaguarda.dlemma.mapper.UserMapper;
 import com.velhaguarda.dlemma.repository.UserRepository;
@@ -52,5 +50,28 @@ public class AuthService {
 
         String token = jwtService.generateToken(user);
         return new AuthResponseDTO(userMapper.toResponseDTO(user), token);
+    }
+
+    public void requestPasswordReset(String email) {
+        userRepository.findByEmail(email).ifPresent(user -> {
+            String token = jwtService.generateResetPasswordToken(email);
+            String resetLink = "https://dlemma.netlify.app/reset-password?token=" + token;
+
+            // Aqui você pode usar EmailService — por enquanto, faça só log
+            logger.info("Link de reset para {}: {}", email, resetLink);
+        });
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        if (!jwtService.isResetPasswordTokenValid(token)) {
+            throw new RuntimeException("Token inválido ou expirado.");
+        }
+
+        String email = jwtService.extractEmail(token);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }
