@@ -57,7 +57,7 @@ public class AuthService {
             String token = jwtService.generateResetPasswordToken(email);
             String resetLink = "https://dlemma.netlify.app/reset-password?token=" + token;
 
-            // Aqui você pode usar EmailService — por enquanto, faça só log
+            // trocar por um serviço de envio de e-mail real dps
             logger.info("Link de reset para {}: {}", email, resetLink);
         });
     }

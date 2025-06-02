@@ -60,16 +60,18 @@ public class JwtService {
         return expiration.before(new Date());
     }
 
+    // cria token temporario com duração de 15min
     public String generateResetPasswordToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .claim("scope", "reset-password")
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 min
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    // verifica se o token de reset de senha é válido
     public boolean isResetPasswordTokenValid(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -80,5 +82,4 @@ public class JwtService {
         return "reset-password".equals(claims.get("scope"))
                 && !isTokenExpired(token);
     }
-
 }
