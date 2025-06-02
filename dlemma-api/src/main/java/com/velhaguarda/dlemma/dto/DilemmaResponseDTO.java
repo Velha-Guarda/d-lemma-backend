@@ -1,0 +1,18 @@
+package com.velhaguarda.dlemma.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@AllArgsConstructor
+public class DilemmaResponseDTO {
+    private int id;
+    private String title;
+    private UUID professorId;
+    private LocalDateTime createdAt;
+    private boolean isClosed;
+    private LocalDateTime closedAt;
+}
