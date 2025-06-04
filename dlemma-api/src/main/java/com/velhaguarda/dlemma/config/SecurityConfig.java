@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll() // libera login e cadastro
                 .requestMatchers(HttpMethod.GET, "/dilemmas/**").permitAll() // libera leitura de dilemas
                 .requestMatchers("/dilemmas/**").authenticated() // protege criação, edição, exclusão
+                .requestMatchers("/invitations/**").permitAll() // Liberado tudo para testes
                 //.requestMatchers("/dilemmas/**").permitAll() // Liberando para testes TUDO a criação, edição, exclusão
                 .anyRequest().authenticated()
             )
