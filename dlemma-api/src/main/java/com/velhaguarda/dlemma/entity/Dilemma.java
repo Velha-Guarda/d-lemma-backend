@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "dilemmas")
+@Table(name = "chats")
 public class Dilemma {
 
     @Id
@@ -18,7 +18,7 @@ public class Dilemma {
     @Column(name = "id_dilemma")
     private int idDilemma;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "dilemma_title", nullable = false, columnDefinition = "TEXT")
     private String title;
 
     @Column(name = "professor_id", nullable = false)
