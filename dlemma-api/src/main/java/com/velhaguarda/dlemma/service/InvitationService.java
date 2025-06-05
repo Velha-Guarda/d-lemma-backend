@@ -38,19 +38,18 @@ public class InvitationService {
         usersChatsRepository.save(usersChats);
     }
 
-public void respondToInvitation(InvitationResponseDTO dto) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal(); 
-    UUID userId = userDetails.getUser().getId(); 
-    
+    public void respondToInvitation(InvitationResponseDTO dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        UUID userId = userDetails.getUser().getId();
 
-    UsersChatsId id = new UsersChatsId(userId, dto.getChatId());
-    UsersChats usersChats = usersChatsRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Convite não encontrado."));
+        UsersChatsId id = new UsersChatsId(userId, dto.getChatId());
+        UsersChats usersChats = usersChatsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Convite não encontrado."));
 
-    usersChats.setInvitation(dto.getResponse());
-    usersChats.setJoinedAt(LocalDateTime.now());
-    usersChatsRepository.save(usersChats);
-}
+        usersChats.setInvitation(dto.getResponse());
+        usersChats.setJoinedAt(LocalDateTime.now());
+        usersChatsRepository.save(usersChats);
+    }
 
 }

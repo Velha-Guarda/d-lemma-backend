@@ -16,8 +16,9 @@ import java.util.Map;
 
 @Slf4j
 @Component
-// evita que o spring envie um HTML como resposta de erro, ao inves disso envia um JSON personalizado
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint { 
+// evita que o spring envie um HTML como resposta de erro, ao inves disso envia
+// um JSON personalizado
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request,

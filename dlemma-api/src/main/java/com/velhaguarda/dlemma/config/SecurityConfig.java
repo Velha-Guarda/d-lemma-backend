@@ -28,19 +28,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // libera login e cadastro
-                .requestMatchers(HttpMethod.GET, "/dilemmas/**").permitAll() // libera leitura de dilemas
-                .requestMatchers("/dilemmas/**").authenticated() // protege criação, edição, exclusão
-                .requestMatchers("/invitations/**").permitAll() // Liberado tudo para testes
-                //.requestMatchers("/dilemmas/**").permitAll() // Liberando para testes TUDO a criação, edição, exclusão
-                .anyRequest().authenticated()
-            )
-            .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/v3/api-docs/swagger-config")
+                        .permitAll() // libera login e cadastro
+                        .requestMatchers(HttpMethod.GET, "/dilemmas/**").permitAll() // libera leitura de dilemas
+                        .requestMatchers("/dilemmas/**").authenticated() // protege criação, edição, exclusão
+                        .requestMatchers("/invitations/**").permitAll() // Liberado tudo para testes
+                        // .requestMatchers("/dilemmas/**").permitAll() // Liberando para testes TUDO a
+                        // criação, edição, exclusão
+                        .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
