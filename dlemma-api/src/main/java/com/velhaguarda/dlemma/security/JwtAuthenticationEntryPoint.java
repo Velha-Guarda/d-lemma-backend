@@ -10,14 +10,15 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Component
-// evita que o spring envie um HTML como resposta de erro, ao inves disso envia um JSON personalizado
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint { 
+// evita que o spring envie um HTML como resposta de erro, ao inves disso envia
+// um JSON personalizado
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request,
@@ -30,7 +31,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json");
 
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        body.put("timestamp", Instant.now().toString());
         body.put("status", HttpStatus.UNAUTHORIZED.value());
         body.put("error", "Unauthorized");
         body.put("message", "Invalid or missing token");
