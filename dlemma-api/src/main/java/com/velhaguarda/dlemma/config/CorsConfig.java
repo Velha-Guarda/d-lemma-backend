@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // permite todas as rotas
-                        .allowedOrigins("https://dlemma.netlify.app/") // ou seu domínio real
+                        .allowedOrigins("https://dlemma.netlify.app") // ou seu domínio real
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
