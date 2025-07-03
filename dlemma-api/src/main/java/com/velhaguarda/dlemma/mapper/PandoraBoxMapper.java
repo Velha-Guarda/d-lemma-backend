@@ -2,12 +2,19 @@ package com.velhaguarda.dlemma.mapper;
 
 import com.velhaguarda.dlemma.dto.PandoraDilemmaResponseDTO;
 import com.velhaguarda.dlemma.entity.PandoraBox;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface PandoraBoxMapper {
-    PandoraBoxMapper INSTANCE = Mappers.getMapper(PandoraBoxMapper.class);
+@Component
+public class PandoraBoxMapper {
 
-    PandoraDilemmaResponseDTO toResponseDTO(PandoraBox pandoraBox);
+    public PandoraDilemmaResponseDTO toResponseDTO(PandoraBox pandoraBox) {
+        if (pandoraBox == null) return null;
+
+        return PandoraDilemmaResponseDTO.builder()
+                .id(pandoraBox.getId())
+                .dilemmaTitle(pandoraBox.getDilemmaTitle())
+                .professorId(pandoraBox.getProfessorId())
+                .createdAt(pandoraBox.getCreatedAt())
+                .build();
+    }
 }
