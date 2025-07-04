@@ -9,22 +9,21 @@ import com.velhaguarda.dlemma.repository.DilemmaRepository;
 import com.velhaguarda.dlemma.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-
 import java.util.Optional;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-@Controller
 @RequiredArgsConstructor
+@Controller
 public class ChatWebSocketController {
 
     private final ChatMessageRepository chatMessageRepository;
     private final DilemmaRepository dilemmaRepository;
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat.sendMessage") // recebe do front via /app/chat.sendMessage
-    @SendTo("/topic/dilemma") // envia para todos inscritos em /topic/dilemma
-    public ChatMessageDTO sendMessage(ChatMessageDTO messageDTO) {
+    @MessageMapping("/chat.sendMessage")
+    public void sendMessage(ChatMessageDTO messageDTO) {
         Optional<Dilemma> dilemmaOpt = dilemmaRepository.findById(messageDTO.getDilemmaId());
         Optional<User> senderOpt = userRepository.findById(messageDTO.getSenderId());
 
@@ -32,13 +31,23 @@ public class ChatWebSocketController {
             throw new IllegalArgumentException("Dilema ou Usuário não encontrado");
         }
 
-        ChatMessage message = new ChatMessage();
-        message.setDilemma(dilemmaOpt.get());
-        message.setSender(senderOpt.get());
-        message.setContent(messageDTO.getContent());
+        Dilemma dilemma = dilemmaOpt.get();
+        User sender = senderOpt.get();
 
+        // Preenche o nome do remetente antes de enviar
+        messageDTO.setSenderName(sender.getName()); // ou getNome(), conforme sua entidade
+
+        // Salvar no banco
+        ChatMessage message = new ChatMessage();
+        message.setDilemma(dilemma);
+        message.setSender(sender);
+        message.setContent(messageDTO.getContent());
         chatMessageRepository.save(message);
 
-        return messageDTO; // enviado de volta para o front (pode customizar com nome, horário, etc.)
+        // Envia para o tópico do dilema
+        messagingTemplate.convertAndSend(
+            "/topic/dilemma." + messageDTO.getDilemmaId(),
+            messageDTO
+        );
     }
 }

@@ -10,6 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ChatMessageDTO {
     private UUID senderId;
+    private String senderName;
     private int dilemmaId;
     private String content;
 }
