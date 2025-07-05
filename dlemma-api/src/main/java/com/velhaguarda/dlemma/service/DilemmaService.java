@@ -11,9 +11,11 @@ import com.velhaguarda.dlemma.repository.DilemmaRepository;
 import com.velhaguarda.dlemma.repository.UserRepository;
 import com.velhaguarda.dlemma.repository.UsersChatsRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,6 +74,45 @@ public class DilemmaService {
             dto.setClosedAt(uc.getDilemma().getClosedAt());
             return dto;
         }).toList();
+    }
+
+       /**
+     * Fecha um dilema (marca isClosed=true e closedAt=now).
+     */
+    @Transactional
+    public DilemmaResponseDTO closeDilemma(int idDilemma) {
+        Dilemma d = dilemmaRepository.findById(idDilemma)
+            .orElseThrow(() -> new RuntimeException("Dilemma não encontrado: " + idDilemma));
+
+        if (Boolean.TRUE.equals(d.getIsClosed())) {
+            throw new RuntimeException("Dilemma já está encerrado: " + idDilemma);
+        }
+
+        d.setIsClosed(true);
+        d.setClosedAt(LocalDateTime.now());
+        Dilemma updated = dilemmaRepository.save(d);
+
+        return new DilemmaResponseDTO(
+            updated.getIdDilemma(),
+            updated.getTitle(),
+            updated.getProfessorId(),
+            updated.getCreatedAt(),
+            updated.getIsClosed(),
+            updated.getClosedAt()
+        );
+    }
+
+        public DilemmaResponseDTO getDilemmaById(int idDilemma) {
+        Dilemma d = dilemmaRepository.findById(idDilemma)
+            .orElseThrow(() -> new RuntimeException("Dilemma não encontrado: " + idDilemma));
+        return new DilemmaResponseDTO(
+            d.getIdDilemma(),
+            d.getTitle(),
+            d.getProfessorId(),
+            d.getCreatedAt(),
+            d.getIsClosed(),
+            d.getClosedAt()
+        );
     }
 
 }
