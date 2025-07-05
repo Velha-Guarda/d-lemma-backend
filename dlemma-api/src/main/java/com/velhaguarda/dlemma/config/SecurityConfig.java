@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/dilemmas/**").permitAll() // libera leitura de dilemas
                         .requestMatchers("/dilemmas/**").authenticated() // protege criação, edição, exclusão
                         .requestMatchers("/invitations/**").permitAll() // Liberado tudo para testes
+                        .requestMatchers("/auth/request-password-reset", "/auth/reset-password").permitAll()
                         .requestMatchers("/ws/**").permitAll() // Liberado tudo para testes
                         // .requestMatchers("/dilemmas/**").permitAll() // Liberando para testes TUDO a
                         // criação, edição, exclusão
