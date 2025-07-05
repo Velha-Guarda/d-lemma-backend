@@ -41,4 +41,23 @@ public class DilemmaController {
         UUID userId = userDetails.getUser().getId();
         return dilemmaService.getMyDilemmasWithStatus(userId);
     }
+
+    @Operation(
+      summary = "Encerrar um dilema",
+      description = "Marca o dilema como encerrado (isClosed=true e closedAt=data atual)."
+    )
+    @PutMapping("/{id}/close")
+    public ResponseEntity<DilemmaResponseDTO> close(@PathVariable("id") int id) {
+        DilemmaResponseDTO dto = dilemmaService.closeDilemma(id);
+        return ResponseEntity.ok(dto);
+    }
+
+@Operation(
+    summary = "Buscar dilema por id",
+    description = "Retorna todos os campos de um dilema específico, incluindo isClosed.")
+    @GetMapping("/{id}")
+    public ResponseEntity<DilemmaResponseDTO> getById(@PathVariable("id") int id) {
+        DilemmaResponseDTO dto = dilemmaService.getDilemmaById(id);
+        return ResponseEntity.ok(dto);
+    }
 }
