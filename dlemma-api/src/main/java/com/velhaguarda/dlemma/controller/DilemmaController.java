@@ -3,8 +3,10 @@ package com.velhaguarda.dlemma.controller;
 import com.velhaguarda.dlemma.dto.DilemmaRequestDTO;
 import com.velhaguarda.dlemma.dto.DilemmaResponseDTO;
 import com.velhaguarda.dlemma.dto.DilemmaStatusResponseDTO;
+import com.velhaguarda.dlemma.dto.ParticipantDTO;
 import com.velhaguarda.dlemma.security.CustomUserDetails;
 import com.velhaguarda.dlemma.service.DilemmaService;
+import com.velhaguarda.dlemma.service.InvitationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,6 +27,7 @@ import org.springframework.security.core.Authentication;
 @SecurityRequirement(name = "bearerAuth")
 public class DilemmaController {
     private final DilemmaService dilemmaService;
+    private final InvitationService invitationService; 
 
     @Operation(summary = "Criar novo dilema", description = "Cria um dilema e vincula o professor automaticamente ao chat.")
     @PostMapping
@@ -59,5 +62,22 @@ public class DilemmaController {
     public ResponseEntity<DilemmaResponseDTO> getById(@PathVariable("id") int id) {
         DilemmaResponseDTO dto = dilemmaService.getDilemmaById(id);
         return ResponseEntity.ok(dto);
+    }
+
+       @Operation(summary = "Listar participantes de um dilema")
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<List<ParticipantDTO>> listParticipants(@PathVariable("id") int id) {
+        List<ParticipantDTO> list = invitationService.listParticipants(id);
+        return ResponseEntity.ok(list);
+    }
+
+    @Operation(summary = "Remover um participante de um dilema")
+    @DeleteMapping("/{id}/participants/{userId}")
+    public ResponseEntity<Void> removeParticipant(
+        @PathVariable("id") int id,
+        @PathVariable("userId") UUID userId
+    ) {
+        invitationService.removeParticipant(id, userId);
+        return ResponseEntity.noContent().build();
     }
 }

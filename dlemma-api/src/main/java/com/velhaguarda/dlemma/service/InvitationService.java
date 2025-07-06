@@ -2,14 +2,17 @@ package com.velhaguarda.dlemma.service;
 
 import com.velhaguarda.dlemma.dto.InvitationResponseDTO;
 import com.velhaguarda.dlemma.dto.InviteRequestDTO;
+import com.velhaguarda.dlemma.dto.ParticipantDTO;
 import com.velhaguarda.dlemma.entity.*;
 import com.velhaguarda.dlemma.enums.InvitationStatus;
 import com.velhaguarda.dlemma.repository.*;
 import com.velhaguarda.dlemma.security.CustomUserDetails;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
@@ -50,6 +53,28 @@ public class InvitationService {
         usersChats.setInvitation(dto.getResponse());
         usersChats.setJoinedAt(LocalDateTime.now());
         usersChatsRepository.save(usersChats);
+    }
+
+       public List<ParticipantDTO> listParticipants(int dilemmaId) {
+        return usersChatsRepository.findByDilemma_IdDilemma(dilemmaId).stream()
+            .map(uc -> new ParticipantDTO(
+                uc.getUser().getId(),
+                uc.getUser().getName(),
+                uc.getUser().getEmail(),
+                uc.getInvitation(),
+                uc.getJoinedAt(),
+                uc.getScore()
+            ))
+            .toList();
+    }
+
+    @Transactional
+    public void removeParticipant(int dilemmaId, UUID userId) {
+        UsersChatsId id = new UsersChatsId(userId, dilemmaId);
+        if (!usersChatsRepository.existsById(id)) {
+            throw new RuntimeException("Participante não encontrado para remoção");
+        }
+        usersChatsRepository.deleteById(id);
     }
 
 }
