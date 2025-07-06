@@ -16,6 +16,7 @@ import com.velhaguarda.dlemma.dto.UserRequestDTO;
 import com.velhaguarda.dlemma.service.AuthService;
 import com.velhaguarda.dlemma.service.PasswordResetService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -38,12 +39,16 @@ public class AuthController { // tudo de login e registro aqui
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Operation(summary = "Enviar pedido de redefinição de senha", description = "Solicita o email para enviar o link com redefinição de senha."
+            +
+            "O usuário recebe um link com um token temporário (15 minutos) para redefinir a senha.")
     @PostMapping("/request-password-reset")
     public ResponseEntity<?> requestPasswordReset(@RequestBody EmailRequestDTO request) {
         passwordResetService.sendResetToken(request.getEmail());
         return ResponseEntity.ok("Token enviado com sucesso.");
     }
 
+    @Operation(summary = "Redefine a senha do usuário.", description = "Solicita o token que foi recebido no email do usuário e a nova senha")
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO request) {
         passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
