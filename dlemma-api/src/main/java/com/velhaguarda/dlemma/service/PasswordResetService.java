@@ -39,7 +39,7 @@ public class PasswordResetService {
         String token = UUID.randomUUID().toString();
         tokens.put(token, new TokenInfo(email, LocalDateTime.now().plusMinutes(15)));
 
-        String resetLink = "https://dlemma.app/reset-password?token=" + token;
+        String resetLink = "https://dlemma.netlify.app/resetar-senha?token=" + token;
 
         String message = """
                 Olá!
